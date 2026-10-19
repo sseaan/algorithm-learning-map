@@ -8,10 +8,10 @@ ACM 算法知识图谱、小测和本机学习记录。小测使用洛谷题目�
 
 ## 在线部署
 
-代码仓库可放在 GitHub。完整交互功能需要 Node 服务，不能仅靠 GitHub Pages 托管。
+完整交互功能包含洛谷题库与 UID 核验 API，不能只用 GitHub Pages 托管。可将仓库导入 Vercel：在 Vercel 新建 Project，选择本仓库，Framework Preset 选 Other，保持默认构建命令为空并部署。`api/` 下的函数提供 API，根目录的 `index.html` 作为网站入口。
 
-仓库包含 Render Blueprint 配置。把 GitHub 仓库导入 Render 并创建 Web Service，Render 会运行 server.js 并托管网页和 API。
+仓库也保留 Render Blueprint 配置，可用于创建 Node Web Service。
 
 ## 数据
 
-洛谷题库接口按知识点标签和节点难度上限随机抽题；题组在抽取后固定保存在当前浏览器。公开练习页提供的已通过题目用于自动核验。账号 UID、题组、状态和笔记都保存在浏览器 localStorage，不会上传到 GitHub。
+洛谷题库接口按知识点标签和节点难度上限随机抽题；题组在抽取后固定保存在当前浏览器。公开练习页提供的已通过题目用于自动核验。账号 UID、题组、状态和笔记都保存在浏览器 localStorage，不会上传到网站服务器或 GitHub。每位用户的数据只在该浏览器和网站域名下保留，不会跨设备同步。

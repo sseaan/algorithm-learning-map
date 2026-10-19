@@ -115,6 +115,21 @@ function json(res, status, body) {
   res.end(JSON.stringify(body));
 }
 
+async function passedForUid(uid) {
+  const response = await fetch('https://www.luogu.com.cn/user/' + uid + '/practice?_contentOnly=1', {
+    headers: { 'Referer': 'https://www.luogu.com.cn/' }
+  });
+  if (!response.ok) throw Object.assign(new Error('洛谷用户练习页返回 HTTP ' + response.status), { status: response.status });
+  const html = await response.text();
+  const match = html.match(/<script id="lentille-context" type="application\/json">([\s\S]*?)<\/script>/);
+  if (!match) throw Object.assign(new Error('无法解析洛谷用户练习页。'), { status: 502 });
+  const context = JSON.parse(match[1]);
+  const user = context.data && context.data.user;
+  if (!user || !user.uid) throw Object.assign(new Error('没有找到该洛谷 UID。'), { status: 404 });
+  const passed = context.data.passed || [];
+  return { uid: user.uid, name: user.name, passed: passed.map(problem => problem.pid), count: passed.length };
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, 'http://' + host + ':' + port);
   if (url.pathname === '/api/problems') {
@@ -133,20 +148,9 @@ const server = http.createServer(async (req, res) => {
     const uid = (url.searchParams.get('uid') || '').trim();
     if (!/^[1-9]\d{0,11}$/.test(uid)) return json(res, 400, { error: '请输入有效的洛谷用户 UID。' });
     try {
-      const response = await fetch('https://www.luogu.com.cn/user/' + uid + '/practice?_contentOnly=1', {
-        headers: { 'Referer': 'https://www.luogu.com.cn/' }
-      });
-      if (!response.ok) return json(res, response.status, { error: '洛谷用户练习页返回 HTTP ' + response.status });
-      const html = await response.text();
-      const match = html.match(/<script id="lentille-context" type="application\/json">([\s\S]*?)<\/script>/);
-      if (!match) return json(res, 502, { error: '无法解析洛谷用户练习页。' });
-      const context = JSON.parse(match[1]);
-      const user = context.data && context.data.user;
-      if (!user || !user.uid) return json(res, 404, { error: '没有找到该洛谷 UID。' });
-      const passed = context.data.passed || [];
-      return json(res, 200, { uid: user.uid, name: user.name, passed: passed.map(problem => problem.pid), count: passed.length });
+      return json(res, 200, await passedForUid(uid));
     } catch (error) {
-      return json(res, 502, { error: error.message });
+      return json(res, error.status || 502, { error: error.message });
     }
   }
   if (url.pathname.startsWith('/api/')) return json(res, 404, { error: 'API not found' });
@@ -162,4 +166,8 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-server.listen(port, host, () => console.log('Algorithm map running at http://' + host + ':' + port));
+if (require.main === module) {
+  server.listen(port, host, () => console.log('Algorithm map running at http://' + host + ':' + port));
+}
+
+module.exports = { questionsForNode, passedForUid };
