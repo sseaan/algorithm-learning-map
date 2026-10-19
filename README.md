@@ -8,7 +8,7 @@ ACM 算法知识图谱、小测和本机学习记录。小测使用洛谷题目�
 
 ## 在线部署
 
-完整交互功能包含洛谷题库与 UID 核验 API，不能只用 GitHub Pages 托管。可将仓库导入 Vercel：在 Vercel 新建 Project，选择本仓库，Framework Preset 选 Other，保持默认构建命令为空并部署。`api/` 下的函数提供 API，根目录的 `index.html` 作为网站入口。
+完整交互功能包含洛谷题库与 UID 核验 API，不能只用 GitHub Pages 托管。可将仓库导入 Netlify：选择本仓库并部署，`netlify.toml` 会自动配置静态页面、函数目录和 API 路由。也支持导入 Vercel，`api/` 下的函数提供 API，根目录的 `index.html` 作为网站入口。
 
 仓库也保留 Render Blueprint 配置，可用于创建 Node Web Service。
 
