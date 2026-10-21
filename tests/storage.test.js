@@ -22,7 +22,7 @@ test.after(() => {
 });
 
 test('loadProgressData falls back to empty objects on corrupt storage', async () => {
-  const storage = await import('../src/state/storage.mjs');
+  const storage = await import('../src/state/storage.js');
   localStorage.map.set(storage.STORAGE_KEYS.state, '{not json');
   localStorage.map.set(storage.STORAGE_KEYS.quizzes, '[]');
   localStorage.map.set(storage.STORAGE_KEYS.accounts, '{"luogu":123}');
@@ -33,7 +33,7 @@ test('loadProgressData falls back to empty objects on corrupt storage', async ()
 });
 
 test('loadProgressData drops invalid quiz records and round-trips valid data', async () => {
-  const storage = await import('../src/state/storage.mjs');
+  const storage = await import('../src/state/storage.js');
   const validQuiz = { problems: [{ id: 'P1001', accepted: true }] };
   localStorage.map.set(storage.STORAGE_KEYS.notes, '{"array":"note"}');
   localStorage.map.set(storage.STORAGE_KEYS.quizzes, JSON.stringify({

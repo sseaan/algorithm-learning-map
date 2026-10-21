@@ -27,8 +27,8 @@ npm run check   # 语法检查
 index.html                 页面骨架
 styles.css                 样式
 app.js                     前端交互、图谱渲染
-src/data/knowledge-map.mjs  知识点与分类数据
-src/state/storage.mjs       localStorage 读取、校验与保存
+src/data/knowledge-map.js  知识点与分类数据
+src/state/storage.js        localStorage 读取、校验与保存
 src/server/cache.js        带过期时间和容量上限的缓存
 src/server/luogu.js        洛谷请求、超时、响应解析、UID 校验
 src/server/problems.js     知识点标签、抽题规则、题目筛选
@@ -40,6 +40,8 @@ tests/                     node:test 测试
 ```
 
 前端状态保存在 `acm-map-state`、`acm-map-notes`、`acm-map-quizzes`、`acm-map-accounts` 四个 localStorage 键中。读取时会做容错，损坏的数据会回退为空对象，不会导致页面白屏。
+
+> 浏览器端 ES 模块统一使用 `.js` 扩展名，不要改回 `.mjs`。部分静态托管（例如 EdgeOne）会把 `.mjs` 以 `application/octet-stream` 返回，浏览器会拒绝执行，导致整个模块图加载失败、页面只剩静态骨架。`tests/frontend-assets.test.js` 会拦截这类回归。
 
 ## 学习数据导入导出
 

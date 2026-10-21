@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 let knowledge;
 
 test.before(async () => {
-  knowledge = await import('../src/data/knowledge-map.mjs');
+  knowledge = await import('../src/data/knowledge-map.js');
 });
 
 test('knowledge map contains a non-empty, unique node set', () => {

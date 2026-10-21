@@ -1,5 +1,5 @@
-import { categories, data } from "./src/data/knowledge-map.mjs";
-import { loadProgressData, saveProgressData, saveAccounts, sanitizeQuizzes } from "./src/state/storage.mjs";
+import { categories, data } from "./src/data/knowledge-map.js";
+import { loadProgressData, saveProgressData, saveAccounts, sanitizeQuizzes } from "./src/state/storage.js";
     const byId=Object.fromEntries(data.map(d=>[d[0],d]));
     const statusNames={todo:"待开始",learning:"进行中",done:"已完成"};
     const colors={todo:"#c75d48",learning:"#ad7d18",done:"#347c50"};
